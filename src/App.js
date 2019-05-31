@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import PageContainer from './components/PageContainer'
+import RichEditorExample from './components/RichEditorExample';
 
 
 class App extends Component {
@@ -8,6 +9,7 @@ class App extends Component {
     return (
       <div className="App">
         <PageContainer />
+        <RichEditorExample />
       </div>
     );
   }
