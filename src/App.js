@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import PageContainer from './components/PageContainer'
-import RichEditorExample from './components/RichEditorExample';
+import RichEditor from './components/RichEditorExample';
 
 
 class App extends Component {
@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <div className="App">
         <PageContainer />
-        <RichEditorExample />
+        <RichEditor />
       </div>
     );
   }

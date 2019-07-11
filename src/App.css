@@ -74,10 +74,12 @@
   position: relative;
 }
 
-.RichEditor-editor .public-DraftEditorPlaceholder-root {
+.RichEditor-editor .public-DraftEditorPlaceholder-root,
+.RichEditor-editor .public-DraftEditor-content {
   margin: 0 -15px -15px;
   padding: 15px;
 }
+
 .public-  -root {
   color: #9197a3;
   position: absolute;
@@ -119,3 +121,9 @@
   position: relative;
   white-space: pre-wrap;
 }
+
+.RichEditor-activeButton {
+  color: #5890ff;
+}
+
+/*******************************************************************************************************/

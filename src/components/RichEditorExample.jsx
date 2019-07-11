@@ -1,23 +1,24 @@
-import Draft from 'draft-js';
-import React from 'react';
+import React from "react";
+import Draft from "draft-js";
 
-const {Editor, EditorState, RichUtils, getDefaultKeyBinding} = Draft;
+const {Editor, EditorState, RichUtils} = Draft;
 
-class RichEditorExample extends React.Component {
+class RichEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {editorState: EditorState.createEmpty()};
 
-    this.focus = () => this.editor.focus();
+    this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => this.setState({editorState});
 
-    this.handleKeyCommand = this._handleKeyCommand.bind(this);
-    this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
-    this.toggleBlockType = this._toggleBlockType.bind(this);
-    this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
+    this.handleKeyCommand = (command) => this._handleKeyCommand(command);
+    this.onTab = (e) => this._onTab(e);
+    this.toggleBlockType = (type) => this._toggleBlockType(type);
+    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
   }
 
-  _handleKeyCommand(command, editorState) {
+  _handleKeyCommand(command) {
+    const {editorState} = this.state;
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
@@ -26,20 +27,9 @@ class RichEditorExample extends React.Component {
     return false;
   }
 
-  _mapKeyToEditorCommand(e) {
-    switch (e.keyCode) {
-      case 9:
-        const newEditorState = RichUtils.onTab(
-          e,
-          this.state.editorState,
-          4,
-        );
-        if (newEditorState !== this.state.editorState) {
-          this.onChange(newEditorState);
-        }
-        return;
-    }
-    return getDefaultKeyBinding(e);
+  _onTab(e) {
+    const maxDepth = 4;
+    this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
   }
 
   _toggleBlockType(blockType) {
@@ -63,6 +53,8 @@ class RichEditorExample extends React.Component {
   render() {
     const {editorState} = this.state;
 
+    // If the user changes block type before entering any text, we can
+    // either style the placeholder or hide it. Let's just hide it now.
     let className = 'RichEditor-editor';
     var contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
@@ -87,10 +79,10 @@ class RichEditorExample extends React.Component {
             customStyleMap={styleMap}
             editorState={editorState}
             handleKeyCommand={this.handleKeyCommand}
-            keyBindingFn={this.mapKeyToEditorCommand}
             onChange={this.onChange}
-            placeholder="Write here..."
-            ref={(ref) => this.editor = ref}
+            onTab={this.onTab}
+            placeholder="Tell a story..."
+            ref="editor"
             spellCheck={true}
           />
         </div>
@@ -199,4 +191,4 @@ const InlineStyleControls = (props) => {
   );
 };
 
-export default RichEditorExample;
+export default RichEditor;
